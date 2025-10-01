@@ -15,12 +15,23 @@ public class App
 {
     public static void main(String[] args) throws Exception
     {
-        System.out.println("Hello World!");
-        log.debug(String.format("[App/main]"));
         log.debug(String.format("[App/main] user.dir:[%s]", System.getProperty("user.dir")));
 
         Properties prop = SimplePropertiesManager.loadProperties("config.properties");
         log.debug(String.format("[App/main] prop:[%s]", prop));
 
+        String host = prop.getProperty("host", "0.0.0.0");
+        int port;
+        try
+        {
+            port = Integer.parseInt(prop.getProperty("port", "8080"));
+        }
+        catch (NumberFormatException e)
+        {
+            port = 8080;
+        }
+        log.info(String.format("[App/main] Starting Netty Echo Server on %s:%d", host, port));
+        EchoServer server = new EchoServer(host, port);
+        server.startAndBlock();
     }
 }
