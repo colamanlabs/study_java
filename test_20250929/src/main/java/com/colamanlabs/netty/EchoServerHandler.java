@@ -16,8 +16,8 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception
     {
-//        log.debug("[EchoServerHandler/channelActive] remote:{}", ctx.channel()
-//                .remoteAddress());
+        log.debug("[EchoServerHandler/channelActive] this:{}\tremote:{}", this, ctx.channel()
+                .remoteAddress());
     }
 
     @Override
@@ -41,8 +41,8 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter
     {
         ctx.flush();
         ctx.close();
-//        log.debug("[EchoServerHandler/channelReadComplete/close] remote:{}", ctx.channel()
-//                .remoteAddress());
+        log.debug("[EchoServerHandler/channelReadComplete/close] this:{}\tremote:{}", this, ctx.channel()
+                .remoteAddress());
     }
 
     @Override

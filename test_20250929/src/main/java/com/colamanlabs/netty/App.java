@@ -20,18 +20,36 @@ public class App
         Properties prop = SimplePropertiesManager.loadProperties("config.properties");
         log.debug(String.format("[App/main] prop:[%s]", prop));
 
-        String host = prop.getProperty("host", "0.0.0.0");
+        String host = prop.getProperty("server.host", "0.0.0.0");
         int port;
         try
         {
-            port = Integer.parseInt(prop.getProperty("port", "8080"));
+            port = Integer.parseInt(prop.getProperty("server.port", "8080"));
         }
         catch (NumberFormatException e)
         {
             port = 8080;
         }
-        log.info(String.format("[App/main] Starting Netty Echo Server on %s:%d", host, port));
-        EchoServer server = new EchoServer(host, port);
+
+        int workerThreadCount;
+        try
+        {
+            workerThreadCount = Integer.parseInt(prop.getProperty("server.worker_thread_count", "10"));
+        }
+        catch (NumberFormatException e)
+        {
+            workerThreadCount = 10;
+        }
+
+        log.info(String.format("[App/main] Starting Netty Echo Server on %s:%d \t workerThreadCount:[%d] ", host, port, workerThreadCount));
+
+        /*
+        보통 서버 생성시 가장 중요한 설정값은
+        IP, PORT, 워커스레드 수 이다.
+        ServerSocket 꺼내는 쓰레드는 리슨포트 1개 이면 여러개를 둘 필요가 없다.
+        빨리 꺼내고 워커쓰레드에게 전달하고 다시 다음 백로그큐에 있는 것을 꺼내야 한다.
+         */
+        EchoServer server = new EchoServer(host, port, workerThreadCount);
         server.startAndBlock();
     }
 }
