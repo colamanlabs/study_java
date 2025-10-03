@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: Maven JAR Plugin 3.3.0
+Build-Jdk-Spec: 17
+Specification-Title: test_3002
+Specification-Version: 1.0
+Main-Class: com.colamanlabs.maven.App
+Implementation-Title: test_3002
+Implementation-Version: 1.0-SNAPSHOT
+
